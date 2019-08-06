@@ -18,21 +18,21 @@ MobileNetV3 Small
 """
 import tensorflow as tf
 
-from layers import ConvNormAct
 from layers import Bneck
+from layers import ConvNormAct
 from layers import LastStage
-from utils import _make_divisible
 from utils import LayerNamespaceWrapper
+from utils import _make_divisible
 
 
 class MobileNetV3(tf.keras.Model):
     def __init__(
             self,
-            num_classes: int=1001,
-            width_multiplier: float=1.0,
-            name: str="MobileNetV3_Small",
-            divisible_by: int=8,
-            l2_reg: float=1e-5,
+            num_classes: int = 1001,
+            width_multiplier: float = 1.0,
+            name: str = "MobileNetV3_Small",
+            divisible_by: int = 8,
+            l2_reg: float = 1e-5,
     ):
         super().__init__(name=name)
 
@@ -52,17 +52,17 @@ class MobileNetV3(tf.keras.Model):
         # Bottleneck layers
         self.bneck_settings = [
             # k   exp   out  SE      NL         s
-            [ 3,  16,   16,  True,   "relu",    2 ],
-            [ 3,  72,   24,  False,  "relu",    2 ],
-            [ 3,  88,   24,  False,  "relu",    1 ],
-            [ 5,  96,   40,  True,   "hswish",  2 ],
-            [ 5,  240,  40,  True,   "hswish",  1 ],
-            [ 5,  240,  40,  True,   "hswish",  1 ],
-            [ 5,  120,  48,  True,   "hswish",  1 ],
-            [ 5,  144,  48,  True,   "hswish",  1 ],
-            [ 5,  288,  96,  True,   "hswish",  2 ],
-            [ 5,  576,  96,  True,   "hswish",  1 ],
-            [ 5,  576,  96,  True,   "hswish",  1 ],
+            [3, 16, 16, True, "relu", 2],
+            [3, 72, 24, False, "relu", 2],
+            [3, 88, 24, False, "relu", 1],
+            [5, 96, 40, True, "hswish", 2],
+            [5, 240, 40, True, "hswish", 1],
+            [5, 240, 40, True, "hswish", 1],
+            [5, 120, 48, True, "hswish", 1],
+            [5, 144, 48, True, "hswish", 1],
+            [5, 288, 96, True, "hswish", 2],
+            [5, 576, 96, True, "hswish", 1],
+            [5, 576, 96, True, "hswish", 1],
         ]
 
         self.bneck = tf.keras.Sequential(name="Bneck")

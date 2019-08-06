@@ -20,9 +20,8 @@ from argparse import ArgumentParser
 
 import tensorflow as tf
 
-from mobilenetv3_factory import build_mobilenetv3
 from datasets import build_dataset
-
+from mobilenetv3_factory import build_mobilenetv3
 
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
@@ -32,13 +31,14 @@ tf.keras.backend.set_session(sess)
 _available_datasets = [
     "mnist",
     "cifar10",
-    ]
+]
 
 _available_optimizers = {
     "rmsprop": tf.train.RMSPropOptimizer,
     "adam": tf.train.AdamOptimizer,
     "sgd": tf.train.GradientDescentOptimizer,
-    }
+}
+
 
 def main(args):
     if args.dataset not in _available_datasets:
@@ -47,7 +47,7 @@ def main(args):
     dataset = build_dataset(
         name=args.dataset,
         shape=[args.height, args.width],
-        )
+    )
 
     model = build_mobilenetv3(
         args.model_type,
@@ -55,7 +55,6 @@ def main(args):
         num_classes=dataset["num_classes"],
         width_multiplier=args.width_multiplier,
     )
-
 
     if args.optimizer not in _available_optimizers:
         raise NotImplementedError
@@ -70,7 +69,7 @@ def main(args):
 
     model.evaluate(
         dataset["test"].make_one_shot_iterator(),
-        steps=(dataset["num_test"]//args.valid_batch_size)+1,
+        steps=(dataset["num_test"] // args.valid_batch_size) + 1,
     )
 
 

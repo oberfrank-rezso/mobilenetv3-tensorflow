@@ -60,6 +60,7 @@ class Squeeze(tf.keras.layers.Layer):
     """Squeeze the second and third dimensions of given tensor.
     (batch, 1, 1, channels) -> (batch, channels)
     """
+
     def __init__(self):
         super().__init__(name="Squeeze")
 
@@ -74,6 +75,7 @@ class GlobalAveragePooling2D(tf.keras.layers.Layer):
     where rows and cols are equal to 1. Output shape of
     `tf.keras.layer.GlobalAveragePooling2D` is (batch_size, channels),
     """
+
     def __init__(self):
         super().__init__(name="GlobalAveragePooling2D")
 
@@ -94,9 +96,10 @@ class BatchNormalization(tf.keras.layers.Layer):
     """Searching fo MobileNetV3: All our convolutional layers
     use batch-normalization layers with average decay of 0.99.
     """
+
     def __init__(
             self,
-            momentum: float=0.99,
+            momentum: float = 0.99,
             name="BatchNormalization",
     ):
         super().__init__(name=name)
@@ -114,14 +117,14 @@ class ConvNormAct(tf.keras.layers.Layer):
     def __init__(
             self,
             filters: int,
-            kernel_size: int=3,
-            stride: int=1,
-            padding: int=0,
-            norm_layer: str=None,
-            act_layer: str="relu",
-            use_bias: bool=True,
-            l2_reg: float=1e-5,
-            name: str="ConvNormAct",
+            kernel_size: int = 3,
+            stride: int = 1,
+            padding: int = 0,
+            norm_layer: str = None,
+            act_layer: str = "relu",
+            use_bias: bool = True,
+            l2_reg: float = 1e-5,
+            name: str = "ConvNormAct",
     ):
         super().__init__(name=name)
 
@@ -144,7 +147,7 @@ class ConvNormAct(tf.keras.layers.Layer):
 
         _available_normalization = {
             "bn": BatchNormalization(),
-            }
+        }
         self.norm = get_layer(norm_layer, _available_normalization, Identity())
 
         _available_activation = {
@@ -173,7 +176,7 @@ class Bneck(tf.keras.layers.Layer):
             stride: int,
             use_se: bool,
             act_layer: str,
-            l2_reg: float=1e-5,
+            l2_reg: float = 1e-5,
     ):
         super().__init__(name="Bneck")
 
@@ -252,9 +255,9 @@ class Bneck(tf.keras.layers.Layer):
 class SEBottleneck(tf.keras.layers.Layer):
     def __init__(
             self,
-            reduction: int=4,
-            l2_reg: float=0.01,
-            name: str="SEBottleneck",
+            reduction: int = 4,
+            l2_reg: float = 0.01,
+            name: str = "SEBottleneck",
     ):
         super().__init__(name=name)
 

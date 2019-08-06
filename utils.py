@@ -51,6 +51,7 @@ class LayerNamespaceWrapper(tf.keras.layers.Layer):
     Default behavior of namespaces defined with nested `tf.keras.Sequential`
     layers is to keep only the most high-level `tf.keras.Sequential` name.
     """
+
     def __init__(
             self,
             layer: tf.keras.layers.Layer,

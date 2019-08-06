@@ -20,9 +20,8 @@ from argparse import ArgumentParser
 
 import tensorflow as tf
 
-from mobilenetv3_factory import build_mobilenetv3
 from datasets import build_dataset
-
+from mobilenetv3_factory import build_mobilenetv3
 
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
@@ -32,13 +31,14 @@ tf.keras.backend.set_session(sess)
 _available_datasets = [
     "mnist",
     "cifar10",
-    ]
+]
 
 _available_optimizers = {
     "rmsprop": tf.train.RMSPropOptimizer,
     "adam": tf.train.AdamOptimizer,
     "sgd": tf.train.GradientDescentOptimizer,
-    }
+}
+
 
 def main(args):
     if args.dataset not in _available_datasets:
@@ -49,7 +49,7 @@ def main(args):
         shape=(args.height, args.width),
         train_batch_size=args.train_batch_size,
         valid_batch_size=args.valid_batch_size
-        )
+    )
 
     model = build_mobilenetv3(
         args.model_type,
@@ -74,10 +74,10 @@ def main(args):
 
     model.fit(
         dataset["train"].make_one_shot_iterator(),
-        steps_per_epoch=(dataset["num_train"]//args.train_batch_size)+1,
+        steps_per_epoch=(dataset["num_train"] // args.train_batch_size) + 1,
         epochs=args.num_epoch,
         validation_data=dataset["test"],
-        validation_steps=(dataset["num_test"]//args.valid_batch_size)+1,
+        validation_steps=(dataset["num_test"] // args.valid_batch_size) + 1,
         callbacks=callbacks,
     )
 

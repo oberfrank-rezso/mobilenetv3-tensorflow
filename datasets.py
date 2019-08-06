@@ -12,18 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
+from typing import Tuple
+
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
-from typing import Tuple
 
 def build_dataset(
-    shape: Tuple[int, int],
-    name: str="mnist",
-    train_batch_size: int=32,
-    valid_batch_size: int=32
-    ):
-
+        shape: Tuple[int, int],
+        name: str = "mnist",
+        train_batch_size: int = 32,
+        valid_batch_size: int = 32
+):
     dataset = {}
     builder = tfds.builder(name)
     dataset["num_train"] = builder.info.splits['train'].num_examples
@@ -43,14 +43,15 @@ def build_dataset(
 
     return dataset
 
+
 def _parse_function(data, shape, num_classes, channels):
     height, width = shape
     image = data["image"]
     label = data["label"]
 
     image = tf.cast(image, dtype=tf.float32)
-    image = tf.image.resize_images(image, (height,width))
-    image = tf.reshape(image, (height,width, channels))
+    image = tf.image.resize_images(image, (height, width))
+    image = tf.reshape(image, (height, width, channels))
     image = image / 255.0
     image = image - 0.5
     image = image * 2.0
