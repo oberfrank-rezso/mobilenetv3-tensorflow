@@ -40,7 +40,7 @@ def get_layer(layer_name, layer_dict, default_layer):
     if layer_name in layer_dict.keys():
         return layer_dict.get(layer_name)
     else:
-        raise NotImplementedError(f"Layer [{layer_name}] is not implemented")
+        raise NotImplementedError("Layer [{}] is not implemented".format(layer_name))
 
 
 class LayerNamespaceWrapper(tf.keras.layers.Layer):

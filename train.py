@@ -81,7 +81,7 @@ def main(args):
         callbacks=callbacks,
     )
 
-    model.save_weights(f"mobilenetv3_{args.model_type}_{args.dataset}_{args.num_epoch}.h5")
+    model.save_weights("mobilenetv3_{}_{}_{}.h5".format(args.model_type, args.dataset, args.num_epoch))
 
 
 if __name__ == "__main__":

@@ -84,12 +84,12 @@ class MobileNetV3(tf.keras.Model):
                         use_se=SE,
                         act_layer=NL,
                     ),
-                    name=f"Bneck{idx}")
+                    name="Bneck{}".format(idx))
             )
 
         # Last stage
         penultimate_channels = _make_divisible(960 * width_multiplier, divisible_by)
-        last_channels = _make_divisible(1_280 * width_multiplier, divisible_by)
+        last_channels = _make_divisible(1280 * width_multiplier, divisible_by)
 
         self.last_stage = LastStage(
             penultimate_channels,

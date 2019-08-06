@@ -83,7 +83,7 @@ class GlobalAveragePooling2D(tf.keras.layers.Layer):
         pool_size = tuple(map(int, input_shape[1:3]))
         self.gap = tf.keras.layers.AveragePooling2D(
             pool_size=pool_size,
-            name=f"AvgPool{pool_size[0]}x{pool_size[1]}",
+            name="AvgPool{}x{}".format(pool_size[0], pool_size[1]),
         )
 
         super().build(input_shape)
@@ -131,7 +131,7 @@ class ConvNormAct(tf.keras.layers.Layer):
         if padding > 0:
             self.pad = tf.keras.layers.ZeroPadding2D(
                 padding=padding,
-                name=f"Padding{padding}x{padding}",
+                name="Padding{}x{}".format(padding, padding),
             )
         else:
             self.pad = Identity()
@@ -140,7 +140,7 @@ class ConvNormAct(tf.keras.layers.Layer):
             filters=filters,
             kernel_size=kernel_size,
             strides=stride,
-            name=f"Conv{kernel_size}x{kernel_size}",
+            name="Conv{}x{}".format(kernel_size, kernel_size),
             kernel_regularizer=tf.keras.regularizers.l2(l2_reg),
             use_bias=use_bias,
         )
@@ -199,12 +199,12 @@ class Bneck(tf.keras.layers.Layer):
         dw_padding = (kernel_size - 1) // 2
         self.pad = tf.keras.layers.ZeroPadding2D(
             padding=dw_padding,
-            name=f"Depthwise/Padding{dw_padding}x{dw_padding}",
+            name="Depthwise/Padding{}x{}".format(dw_padding, dw_padding),
         )
         self.depthwise = tf.keras.layers.DepthwiseConv2D(
             kernel_size=kernel_size,
             strides=stride,
-            name=f"Depthwise/DWConv{kernel_size}x{kernel_size}",
+            name="Depthwise/DWConv{}x{}".format(kernel_size, kernel_size),
             depthwise_regularizer=tf.keras.regularizers.l2(l2_reg),
             use_bias=False,
         )
