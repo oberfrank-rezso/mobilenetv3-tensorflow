@@ -7,15 +7,19 @@ def build_mobilenetv3_tpuestimator(use_tpu: bool = True,
                                    params: dict = {},
                                    batch_size: int = 128,
                                    model_dir: str = None,
-                                   report_iterations: int = 10,
+                                   report_iterations: int = 500,
+                                   save_summary_steps: int = 500,
+                                   save_checkpoints_steps: int = 500,
                                    tpu_name: str = ''):
     params['use_tpu'] = use_tpu
 
     run_config = tf.contrib.tpu.RunConfig(model_dir=model_dir,
                                           cluster=tf.contrib.cluster_resolver.TPUClusterResolver(tpu_name),
-                                          session_config=tf.ConfigProto(allow_soft_placement=True,
-                                                                        log_device_placement=True),
-                                          tpu_config=tf.contrib.tpu.TPUConfig(report_iterations))
+                                          session_config=tf.compat.v1.ConfigProto(allow_soft_placement=True,
+                                                                                  log_device_placement=True),
+                                          tpu_config=tf.contrib.tpu.TPUConfig(report_iterations),
+                                          save_summary_steps=save_summary_steps,
+                                          save_checkpoints_steps=save_checkpoints_steps)
 
     return tf.estimator.tpu.TPUEstimator(model_fn=model_fn,
                                          params=params,
@@ -36,7 +40,7 @@ def model_fn(features, labels, mode, params):
     predictions = model(features, training=(mode == tf.estimator.ModeKeys.TRAIN))
 
     if mode == tf.estimator.ModeKeys.PREDICT:
-        return tf.estimator.tpu.TPUEstimatorSpec(mode=mode, predictions=predictions)
+        return tf.compat.v1.estimator.tpu.TPUEstimatorSpec(mode=mode, predictions=predictions)
 
     if params['optimizer'] == 'adam':
         optimizer = tf.compat.v1.train.AdamOptimizer()
@@ -56,13 +60,13 @@ def model_fn(features, labels, mode, params):
     def metric_fn(y_true, y_pred):
 
         predicted_classes = tf.argmax(y_pred, 1)
-        accuracy = tf.metrics.accuracy(labels=tf.argmax(y_true, 1),
-                                       predictions=predicted_classes,
-                                       name="acc_op")
+        accuracy = tf.compat.v1.metrics.accuracy(labels=tf.argmax(y_true, 1),
+                                                 predictions=predicted_classes,
+                                                 name="acc_op")
         return {"accuracy": accuracy}
 
-    return tf.estimator.tpu.TPUEstimatorSpec(mode=mode,
-                                             predictions=predictions,
-                                             loss=loss,
-                                             train_op=train_op,
-                                             eval_metrics=(metric_fn, [labels, predictions]))
+    return tf.compat.v1.estimator.tpu.TPUEstimatorSpec(mode=mode,
+                                                       predictions=predictions,
+                                                       loss=loss,
+                                                       train_op=train_op,
+                                                       eval_metrics=(metric_fn, [labels, predictions]))
