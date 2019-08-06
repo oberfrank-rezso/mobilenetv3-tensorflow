@@ -35,6 +35,7 @@ def build_mobilenetv3(
         num_classes: int = 1001,
         width_multiplier: float = 1.0,
         l2_reg: float = 1e-5,
+        batch_size: int=None,
 ):
     assert len(
         input_shape) == 3, "`input_shape` should be a tuple representing input data shape (height, width, channels)"
@@ -48,7 +49,7 @@ def build_mobilenetv3(
         l2_reg=l2_reg,
     )
 
-    input_tensor = tf.keras.layers.Input(shape=input_shape)
+    input_tensor = tf.keras.layers.Input(shape=input_shape, batch_size=batch_size)
     output_tensor = model(input_tensor)
 
     model = tf.keras.Model(
